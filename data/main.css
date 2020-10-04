@@ -1,0 +1,19 @@
+input[type="text"] {
+    width: 90%;
+    height: 12vh;
+}
+
+input[type="button"] {
+    width: 9%;
+    height: 12.6vh;
+}
+
+.rxd {
+    height: 90vh;
+}
+
+textarea {
+    width: 99%;
+    height: 100%;
+    resize: none;
+}
