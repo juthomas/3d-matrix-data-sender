@@ -193,16 +193,7 @@ void setup() {
 	os_timer_arm(&myTimer, TIMER_UPDATE, true);
 
 
-  // put your setup code here, to run once:
 }
-
-/*
-void loop() {
-	Serial.println(matrix_3d);
-	delay(5000);
-}
-*/
-
 
 void loop() {
 	MDNS.update();
