@@ -116,13 +116,15 @@ const String matrix_3d = "[data] \
 ";
 
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length){
+	//Serial.println("socket received");
 	if (type == WStype_TEXT)
 	{
-		for(size_t i = 0; i < length; i++)
-		{
-			Serial.print((char) payload[i]);
-		}
-		Serial.println();
+		// for(size_t i = 0; i < length; i++)
+		// {
+		// 	Serial.print((char) payload[i]);
+		// }
+		Serial.println((char*)payload);
+		// Serial.println();
 	}
 }
 
