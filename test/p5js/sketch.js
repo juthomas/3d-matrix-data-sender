@@ -2,20 +2,55 @@
 
 
 var rc;
+var stateList = [];
+
+function initStateList()
+{
+  for (var i = 0; i < 512; i++)
+  {
+    stateList.push(0);
+  }
+}
 
 function setup() {
   //createCanvas(400, 400);
   createCanvas(400,400,WEBGL);
-  
+  pixelDensity(1);
+  initStateList();
   rc = createGraphics(400,400,WEBGL);
-  rc.show();
-  rc.style("display", "inline");
-  
+  rc.pixelDensity(1);
+ rc.show();
+ rc.style("display", "inline");
+ button = createButton("Send data");
+ button.position(150, 19);
+ button.mousePressed(sendData);
 }
 
 var matrixSize = 20; 
 var ledSize = 7;
 
+function sendData(){
+  var output = "[data]{"
+  var number = 1;
+  for (var z = 0; z < 8; z++)
+  {
+      output += "{";
+      for (var y = 0; y < 8; y++)
+      {
+       output += "{";
+
+        for (var x = 0; x < 8; x++)
+        {
+          output += stateList[number - 1].toString();
+          number++;
+        }
+        output += "}";
+      }
+      output += "}";
+    }
+    output += "}";
+    print(output);
+}
 
 function numberToHexaColor(rgb)
 {
@@ -63,7 +98,19 @@ function drawRayCastingBuffer()
   }
 }
 
+var pointedObj;
 
+function mousePressed()
+{
+  print("clic");
+  pointedObj
+  print(pointedObj);
+  if (pointedObj > 0)
+  {
+    print("Yes");
+    stateList[pointedObj - 1] = stateList[pointedObj - 1] == 1 ? 0 : 1;
+  }
+}
 
 function draw() {
   resetMatrix();
@@ -79,8 +126,10 @@ function draw() {
             matrixSize * -4);
   
   var mouseObj = getObject(mouseX, mouseY);
+  pointedObj = mouseObj;
 
-  print(mouseObj);
+  //print(mouseObj);
+  
   var number = 1;
   for (var z = 0; z < 8; z++)
   {
@@ -90,6 +139,10 @@ function draw() {
         for (var x = 0; x < 8; x++)
         {
           if (number == mouseObj)
+          {
+            fill('pink');
+          }
+          else if (stateList[number - 1] == 1)
           {
             fill('red');
           }
@@ -137,7 +190,7 @@ function getObject(mx, my)
 		pix[index + 3]];
 //	return cor;
     
-    // print(colorArrayToNumber(col));
+    //print(colorArrayToNumber(col));
     return (colorArrayToNumber(col) > 512 ? -1 : colorArrayToNumber(col));
 }
 
