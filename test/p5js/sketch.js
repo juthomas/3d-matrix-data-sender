@@ -3,6 +3,7 @@
 
 var rc;
 var stateList = [];
+var Socket;
 
 function initStateList()
 {
@@ -13,6 +14,7 @@ function initStateList()
 }
 
 function setup() {
+  Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
   //createCanvas(400, 400);
   createCanvas(400,400,WEBGL);
   pixelDensity(1);
@@ -50,6 +52,7 @@ function sendData(){
     }
     output += "}";
     print(output);
+    Socket.send(output);
 }
 
 function numberToHexaColor(rgb)

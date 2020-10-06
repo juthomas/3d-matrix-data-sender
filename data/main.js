@@ -4,7 +4,8 @@
 var rc;
 var stateList = [];
 var Socket;
-
+var setTimeButton;
+var d;
 
 function initStateList()
 {
@@ -22,8 +23,17 @@ function ClearData()
   }
 }
 
+
 function setup() {
-  Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+  try
+  {
+    Socket = new WebSocket('ws://' + window.location.hostname + ':81/');
+  }
+  catch (exception)
+  {
+    print(exception);
+  }
+  
 
   //createCanvas(400, 400);
   createCanvas(400,400,WEBGL);
@@ -41,6 +51,147 @@ function setup() {
  button2.position(200, 19);
  button2.mousePressed(ClearData);
 
+  setTimeButton = createButton("Current time");
+  setTimeButton.position(300, 19);
+  setTimeButton.mousePressed(applyTimeToMatrix);
+
+}
+
+function numberToLayer(number)
+{
+  if (number == 0)
+  {
+    return ([0,0,1,1,1,1,0,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,0,0,1,1,0,
+             0,1,1,0,0,1,1,0,
+             0,1,1,0,0,1,1,0,
+             0,1,1,0,0,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,0,1,1,1,1,0,0]);
+  }
+  else if (number == 1)
+  {
+    return ([0,0,0,1,1,0,0,0,
+             0,0,1,1,1,0,0,0,
+             0,1,1,1,1,0,0,0,
+             0,1,0,1,1,0,0,0,
+             0,0,0,1,1,0,0,0,
+             0,1,0,1,1,0,0,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,1,1,1,1,0]);
+  }
+  else if (number == 2)
+  {
+    return ([0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0]);
+  }
+  else if (number == 3)
+  {
+    return ([0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0]);
+  }
+  else if (number == 4)
+  {
+    return ([0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0]);
+  }
+  else if (number == 5)
+  {
+    return ([0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0]);
+  }
+  else if (number == 6)
+  {
+    return ([0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0]);
+  }
+  else if (number == 7)
+  {
+    return ([0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0]);
+  }
+  else if (number == 8)
+  {
+    return ([0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0]);
+  }
+  else if (number == 9)
+  {
+    return ([0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0]);
+  }
+  else
+  {
+    return ([0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0,
+             0,0,0,0,0,0,0,0]);
+  }
+}
+
+
+function applyTimeToMatrix()
+{
+  var startingNumber = 1;
+  var layerNumber = numberToLayer(1);
+  
+  for (var i = 0; i < 64; i++)
+  {
+    stateList[i + startingNumber - 1] = layerNumber[i];
+  }
 
 }
 
@@ -68,7 +219,10 @@ function sendData(){
     }
     output += "}";
     print(output);
-    Socket.send(output);
+    if (Socket)
+    {
+      Socket.send(output);
+    }
 
 }
 
@@ -133,6 +287,8 @@ function mousePressed()
 }
 
 function draw() {
+  d = new Date();
+  setTimeButton.elt.innerHTML = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
   resetMatrix();
   drawRayCastingBuffer();
   background(255);
