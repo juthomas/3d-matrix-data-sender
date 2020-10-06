@@ -77,7 +77,7 @@ function numberToLayer(number)
              0,1,1,1,1,0,0,0,
              0,1,0,1,1,0,0,0,
              0,0,0,1,1,0,0,0,
-             0,1,0,1,1,0,0,0,
+             0,0,0,1,1,0,0,0,
              0,1,1,1,1,1,1,0,
              0,1,1,1,1,1,1,0]);
   }
@@ -185,7 +185,7 @@ function numberToLayer(number)
 
 function applyTimeToMatrix()
 {
-  var startingNumber = 1;
+  var startingNumber = 65;
   var layerNumber = numberToLayer(1);
   
   for (var i = 0; i < 64; i++)
@@ -241,13 +241,14 @@ function drawRayCastingBuffer()
   rc.resetMatrix();
   rc.background(255);
   rc.translate(0, 0, -300)
+
   rc.rotateX(millis() * 0.0005);
   rc.rotateY(millis() * 0.0005);
   
   
   rc.translate(matrixSize * -4,
             matrixSize * -4,
-            matrixSize * -4);
+            matrixSize * 4);
   rc.noStroke();
   var number = 1;
   for (var z = 0; z < 8; z++)
@@ -268,7 +269,7 @@ function drawRayCastingBuffer()
       }
     
       rc.translate(0, matrixSize * -8,
-                matrixSize);
+                -matrixSize);
   }
 }
 
@@ -299,7 +300,7 @@ function draw() {
   
   translate(matrixSize * -4,
             matrixSize * -4,
-            matrixSize * -4);
+            matrixSize * 4);
   
   var mouseObj = getObject(mouseX, mouseY);
   pointedObj = mouseObj;
@@ -336,7 +337,7 @@ function draw() {
       }
     
       translate(0, matrixSize * -8,
-                matrixSize);
+                -matrixSize);
   }
 
 
