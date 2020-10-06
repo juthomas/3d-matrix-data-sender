@@ -6,6 +6,8 @@ var stateList = [];
 var Socket;
 var setTimeButton;
 var d;
+var displayTime = false;
+var autoApplyToReal = false;
 
 function initStateList()
 {
@@ -55,7 +57,44 @@ function setup() {
   setTimeButton.position(300, 19);
   setTimeButton.mousePressed(applyTimeToMatrix);
 
+
+ 
+    checkbox1 = createCheckbox('Display time', false);
+    checkbox1.position(400, 19);
+    checkbox1.changed(myCheckedEvent1);
+    checkbox2 = createCheckbox('Auto send Data', false);
+    checkbox2.position(500, 19);
+    checkbox2.changed(myCheckedEvent2);
+    setInterval(timeLoop, 100);
 }
+
+function timeLoop()
+{
+  d = new Date();
+  setTimeButton.elt.innerHTML = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+  if (displayTime)
+  {
+    applyTimeToMatrix();
+  }
+}
+
+function myCheckedEvent1() {
+  if (this.checked()) {
+    displayTime = true;
+  } else {
+    displayTime = false;
+  }
+}
+
+function myCheckedEvent2() {
+  if (this.checked()) {
+    autoApplyToReal = true;
+  } else {
+    autoApplyToReal = false;
+  }
+}
+
+
 
 function numberToLayer(number)
 {
@@ -83,122 +122,164 @@ function numberToLayer(number)
   }
   else if (number == 2)
   {
-    return ([0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0]);
+    return ([0,0,1,1,1,1,0,0,
+             0,1,1,1,1,1,1,0,
+             0,1,0,0,1,1,1,0,
+             0,0,0,0,0,1,1,0,
+             0,0,0,0,1,1,0,0,
+             0,0,0,1,1,0,0,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,1,1,1,1,0]);
   }
   else if (number == 3)
   {
-    return ([0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0]);
+    return ([0,1,1,1,1,1,0,0,
+             0,1,1,1,1,1,1,0,
+             0,0,0,0,0,1,1,0,
+             0,0,1,1,1,1,0,0,
+             0,0,1,1,1,1,0,0,
+             0,0,0,0,0,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,1,1,1,0,0]);
   }
   else if (number == 4)
   {
-    return ([0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0]);
+    return ([0,0,0,0,1,1,0,0,
+             0,0,0,1,1,0,0,0,
+             0,0,1,1,0,0,0,0,
+             0,1,1,0,0,0,0,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,0,0,0,1,1,0,0,
+             0,0,0,0,1,1,0,0]);
   }
   else if (number == 5)
   {
-    return ([0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0]);
+    return ([0,1,1,1,1,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,0,0,0,0,0,
+             0,1,1,1,1,1,0,0,
+             0,1,1,1,1,1,1,0,
+             0,0,0,0,0,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,1,1,1,0,0]);
   }
   else if (number == 6)
   {
-    return ([0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0]);
+    return ([0,0,1,1,1,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,0,0,0,0,0,
+             0,1,1,1,1,1,0,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,0,0,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,0,1,1,1,1,0,0]);
   }
   else if (number == 7)
   {
-    return ([0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0]);
+    return ([0,1,1,1,1,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,0,0,0,0,1,1,0,
+             0,0,0,0,1,1,0,0,
+             0,0,0,0,1,1,0,0,
+             0,0,0,1,1,0,0,0,
+             0,0,0,1,1,0,0,0,
+             0,0,0,1,1,0,0,0]);
   }
   else if (number == 8)
   {
-    return ([0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0]);
+    return ([0,0,1,1,1,1,0,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,0,0,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,0,0,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,0,1,1,1,1,0,0]);
   }
   else if (number == 9)
   {
-    return ([0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0]);
+    return ([0,0,1,1,1,1,0,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,0,0,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,0,1,1,1,1,1,0,
+             0,0,0,0,0,1,1,0,
+             0,1,1,1,1,1,1,0,
+             0,1,1,1,1,1,0,0]);
   }
   else
   {
     return ([0,0,0,0,0,0,0,0,
+             0,0,0,1,1,0,0,0,
+             0,0,0,1,1,0,0,0,
              0,0,0,0,0,0,0,0,
              0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
-             0,0,0,0,0,0,0,0,
+             0,0,0,1,1,0,0,0,
+             0,0,0,1,1,0,0,0,
              0,0,0,0,0,0,0,0]);
   }
 }
 
-
-function applyTimeToMatrix()
+function applyNumberToMatrix(layerIndex, number)
 {
-  var startingNumber = 65;
-  var layerNumber = numberToLayer(1);
-  
+  var layerNumber = numberToLayer(number);
+  var startingNumber = 1 + 64 * layerIndex;
   for (var i = 0; i < 64; i++)
   {
     stateList[i + startingNumber - 1] = layerNumber[i];
   }
+}
+
+
+var oldTimeState = -1;
+
+function applyTimeToMatrix()
+{
+  //var startingNumber = 65;
+  //var layerNumber = numberToLayer(9);
+  ClearData();
+  var state = (d.getSeconds() % 20) * 3 + (Math.floor(d.getMilliseconds()/300));
+  print("state :"+ state);
+  if (state < 8)
+  {
+    print("test H :"+ Math.floor(d.getHours()/10));
+    applyNumberToMatrix(state, Math.floor(d.getHours()/10));
+  }
+  else if (state < 16)
+  {
+    print("test HH:"+ d.getHours()%10);
+    applyNumberToMatrix(state % 8, d.getHours() % 10);
+  }
+  else if (state < 24)
+  {
+    print("test :"+ -1);
+    applyNumberToMatrix(state % 8, -1);
+  }
+  else if (state < 32)
+  {
+    print("test mm:"+ Math.floor(d.getMinutes()/10));
+    applyNumberToMatrix(state % 8, Math.floor(d.getMinutes()/10));
+  }
+  else if (state < 40)
+  {
+    print("test mm:"+ d.getMinutes()%10);
+    applyNumberToMatrix(state % 8, d.getMinutes()%10);
+  }
+  if (oldTimeState != state && autoApplyToReal)
+  {
+    sendData();
+  }
+  oldTimeState = state;
+
 
 }
 
 var matrixSize = 20; 
 var ledSize = 7;
 
-function sendData(){
+function sendData()
+{
   var output = "[data]{"
   var number = 1;
   for (var z = 0; z < 8; z++)
@@ -244,7 +325,7 @@ function drawRayCastingBuffer()
 
   rc.rotateX(millis() * 0.0005);
   rc.rotateY(millis() * 0.0005);
-  
+
   
   rc.translate(matrixSize * -4,
             matrixSize * -4,
@@ -285,12 +366,17 @@ function mousePressed()
     print("Yes");
     stateList[pointedObj - 1] = stateList[pointedObj - 1] == 1 ? 0 : 1;
   }
+  if (autoApplyToReal)
+  {
+    sendData();
+  }
 }
 
 function draw() {
-  d = new Date();
-  setTimeButton.elt.innerHTML = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+
   resetMatrix();
+
+  
   drawRayCastingBuffer();
   background(255);
   translate(0, 0, -300)
@@ -325,7 +411,9 @@ function draw() {
           }
           else
           {
-            fill('white');
+            noFill();
+            strokeWeight(0.5);
+            // fill('white');
           }
           
             box(ledSize);
