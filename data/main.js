@@ -8,6 +8,13 @@ var setTimeButton;
 var d;
 var displayTime = false;
 var autoApplyToReal = false;
+var autoRotate = false;
+
+var rotationX = 0;
+var rotationY = 0;
+var rotationXDesired = 0;
+var rotationYDesired = 0;
+
 
 function initStateList()
 {
@@ -38,13 +45,18 @@ function setup() {
   
 
   //createCanvas(400, 400);
-  createCanvas(400,400,WEBGL);
+  createCanvas(800,800,WEBGL);
   pixelDensity(1);
   initStateList();
-  rc = createGraphics(400,400,WEBGL);
+  rc = createGraphics(800,800,WEBGL);
   rc.pixelDensity(1);
  rc.show();
- rc.style("display", "inline");
+ 
+ 
+ rc.style("position", "absolute");
+ rc.style("top", "0");
+ rc.style("opacity", "0.01");
+//  rc.parent("hidden_opengl");
  button1 = createButton("Send data");
  button1.position(100, 19);
  button1.mousePressed(sendData);
@@ -58,13 +70,43 @@ function setup() {
   setTimeButton.mousePressed(applyTimeToMatrix);
 
 
+  upButton = createButton("UP");
+  upButton.position(550, 60);
+  upButton.size(60, 23);
+  upButton.mousePressed(() => rotationYDesired = 0.03);
+  upButton.mouseReleased(() => rotationYDesired = 0)
+
+  downButton = createButton("DOWN");
+  downButton.position(550, 85);
+  downButton.size(60, 23)
+  downButton.mousePressed(() => rotationYDesired = -0.03);
+  downButton.mouseReleased(() => rotationYDesired = 0)
+
+  rightButton = createButton("RIGHT");
+  rightButton.position(613, 85);
+  rightButton.size(60, 23)
+  rightButton.mousePressed(() => rotationXDesired = 0.03);
+  rightButton.mouseReleased(() => rotationXDesired = 0)
+
+
+  leftButton = createButton("LEFT");
+  leftButton.position(487, 85);
+  leftButton.size(60, 23)
+  leftButton.mousePressed(() => rotationXDesired = -0.03);
+  leftButton.mouseReleased(() => rotationXDesired = 0)
+
  
     checkbox1 = createCheckbox('Display time', false);
     checkbox1.position(400, 19);
     checkbox1.changed(myCheckedEvent1);
     checkbox2 = createCheckbox('Auto send Data', false);
-    checkbox2.position(500, 19);
+    checkbox2.position(510, 19);
     checkbox2.changed(myCheckedEvent2);
+    checkbox3 = createCheckbox('Auto rotate', false);
+    checkbox3.position(630, 19);
+    checkbox3.changed(myCheckedEvent3);
+
+
     setInterval(timeLoop, 100);
 }
 
@@ -93,6 +135,15 @@ function myCheckedEvent2() {
     autoApplyToReal = false;
   }
 }
+
+function myCheckedEvent3() {
+  if (this.checked()) {
+    autoRotate = true;
+  } else {
+    autoRotate = false;
+  }
+}
+
 
 
 
@@ -323,8 +374,18 @@ function drawRayCastingBuffer()
   rc.background(255);
   rc.translate(0, 0, -300)
 
-  rc.rotateX(millis() * 0.0005);
-  rc.rotateY(millis() * 0.0005);
+
+
+
+  rc.rotateX(rotationY);
+  rc.rotateY(rotationX);
+ 
+ 
+    // else
+  // {
+  //   rc.rotateX(0);
+  //   rc.rotateY(0);
+  // }
 
   
   rc.translate(matrixSize * -4,
@@ -373,16 +434,29 @@ function mousePressed()
 }
 
 function draw() {
-
+  if (autoRotate)
+  {
+    rotationX += deltaTime * 0.0005;
+    rotationY += deltaTime * 0.0005;
+  }
+  else
+  {
+    rotationX += rotationXDesired;
+    rotationY += rotationYDesired;
+  }
   resetMatrix();
 
   
   drawRayCastingBuffer();
   background(255);
   translate(0, 0, -300)
-  rotateX(millis() * 0.0005);
-  rotateY(millis() * 0.0005);
+
+  // rotateX(millis() * 0.0005);
+  // rotateY(millis() * 0.0005);
   
+  
+  rotateX(rotationY);
+  rotateY(rotationX);
   
   translate(matrixSize * -4,
             matrixSize * -4,
@@ -403,11 +477,18 @@ function draw() {
         {
           if (number == mouseObj)
           {
-            fill('pink');
+            if (stateList[number - 1] == 1)
+            {
+              fill('#ff3c3c');
+            }
+            else
+            {
+              fill('#ff5b5b')
+            }
           }
           else if (stateList[number - 1] == 1)
           {
-            fill('red');
+            fill('#ff0000');
           }
           else
           {
@@ -461,6 +542,8 @@ function getObject(mx, my)
 
 function getPixels() {
 	var gl = rc.elt.getContext('webgl');
+  // gl.clear();
+
 	var pixels = new Uint8Array(gl.drawingBufferWidth * gl.drawingBufferHeight * 4);
 	gl.readPixels(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
 	return (pixels);
